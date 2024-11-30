@@ -8,21 +8,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-         os: [macos-10.15]
+         os: [macos-latest]
     timeout-minutes: 360
  
     steps:
       - uses: actions/checkout@v2
 
-      - name: Cache boxes
-        uses: actions/cache@v2
+      - uses: leleliu008/github-actions-vagrant@v1
         with:
-          path: ~/.vagrant.d/boxes
-          key: ${{ runner.os }}-vagrant-${{ hashFiles('Vagrantfile') }}
-          restore-keys: |
-            ${{ runner.os }}-vagrant-
-      - name: Run up
-        run: vagrant up
-      - name: ssh into box after boot
-        run: |
-          vagrant ssh -c "python"
+          mem: 5048
+          ncpu: 4
+          box: generic/ubuntu1804
+          run: |
+            lscpu
