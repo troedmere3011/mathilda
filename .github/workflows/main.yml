@@ -1,23 +1,30 @@
 name: Build
-on: 
-  workflow_dispatch:
- 
+on: [workflow_dispatch]
 jobs:
- node-1:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-         os: [macos-latest]
-    timeout-minutes: 360
- 
+  build-on-openbsd:
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
 
       - uses: leleliu008/github-actions-vagrant@v1
         with:
-          mem: 5048
-          ncpu: 4
-          box: generic/ubuntu1804
+          mem: 2048
+          box: generic/openbsd6
           run: |
-            lscpu
+            export AUTOCONF_VERSION=2.69
+            export AUTOMAKE_VERSION=1.16
+              
+            export CFLAGS='-I/usr/local/include -L/usr/local/lib'
+              
+            if [ ! -f /usr/local/lib/libiconv.so ] ; then
+                sudo ln -s /usr/local/lib/libiconv.so.* /usr/local/lib/libiconv.so
+            fi
+              
+            run sudo pkg_add automake-1.16.2
+            
+            run ./autogen.sh
+            run ./configure --prefix=/usr
+            run make
+            run sudo make install
+            run file /usr/bin/ctags
+            run ctags --version
