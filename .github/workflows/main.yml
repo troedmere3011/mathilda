@@ -13,9 +13,15 @@ jobs:
  
     steps:
       - uses: actions/checkout@v4
-      - run: mkdir runner
-      - name: Setup App
-        working-directory: ./runner
+      - name: Cache boxes
+      - uses: actions/cache@v2
+        with:
+        path: ~/.vagrant.d/boxes
+        key: ${{ runner.os }}-vagrant-${{ hashFiles('Vagrantfile') }}
+        restore-keys: |
+          ${{ runner.os }}-vagrant-
+      - name: Run up
+        run: vagrant up
+      - name: ssh into box after boot
         run: |
-             sysctl -n hw.ncpu
-        shell: bash
+           vagrant ssh -c "python"
