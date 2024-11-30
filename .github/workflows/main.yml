@@ -4,27 +4,15 @@ jobs:
   build-on-openbsd:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: leleliu008/github-actions-vagrant@v1
+      - uses: leleliu008/github-actions-vagrant@main
         with:
           mem: 2048
-          box: generic/openbsd6
+          box: generic/netbsd${{ matrix.version }}
+          log: debug
           run: |
-            export AUTOCONF_VERSION=2.69
-            export AUTOMAKE_VERSION=1.16
-              
-            export CFLAGS='-I/usr/local/include -L/usr/local/lib'
-              
-            if [ ! -f /usr/local/lib/libiconv.so ] ; then
-                sudo ln -s /usr/local/lib/libiconv.so.* /usr/local/lib/libiconv.so
-            fi
-              
-            run sudo pkg_add automake-1.16.2
-            
-            run ./autogen.sh
-            run ./configure --prefix=/usr
-            run make
-            run sudo make install
-            run file /usr/bin/ctags
-            run ctags --version
+            run id
+            run pwd
+            run export -p
+            touch aaa
+
+      - run: printf '%s\n' "$VAGRANT_CWD"
