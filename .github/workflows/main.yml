@@ -2,7 +2,7 @@ name: Build
 on: [workflow_dispatch]
 jobs:
   build-on-openbsd:
-    runs-on: macos-latest
+    runs-on: macos-12
     steps:
       - uses: leleliu008/github-actions-vagrant@main
         with:
