@@ -1,0 +1,21 @@
+name: Build
+on: 
+  workflow_dispatch:
+ 
+jobs:
+ node-1:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+         os: [macos-13]
+    timeout-minutes: 360
+ 
+    steps:
+      - uses: actions/checkout@v4
+      - run: mkdir runner
+      - name: Setup App
+        working-directory: ./runner
+        run: |
+             lscpu
+        shell: bash
