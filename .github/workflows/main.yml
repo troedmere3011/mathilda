@@ -17,5 +17,5 @@ jobs:
       - name: Setup App
         working-directory: ./runner
         run: |
-             lscpu
+             sysctl -n hw.ncpu
         shell: bash
