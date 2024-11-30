@@ -10,6 +10,5 @@ jobs:
         with:
           mem: 2048
           box: generic/ubuntu1804
-          log: debug
           run: |
             lscpu
